@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodieFiesta - Full Restaurant Website</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {font-family: 'Segoe UI', sans-serif; background: #fff; color: #333;}
+    header {background: #ff5722; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 999; color: white;}
+    nav a {margin: 0 10px; color: white; text-decoration: none; font-weight: 500;}
+    nav a:hover {text-decoration: underline;}
+    .menu-toggle {display: none; cursor: pointer; font-size: 24px;}
+
+    .hero {background: url('https://source.unsplash.com/1600x600/?restaurant,food') center/cover no-repeat; padding: 100px 20px; text-align: center; color: white;}
+    .hero h1 {font-size: 48px;}
+    .hero p {font-size: 18px; margin-top: 10px;}
+
+    .section {padding: 60px 20px; max-width: 1200px; margin: auto;}
+    .section h2 {text-align: center; font-size: 36px; margin-bottom: 30px; color: #444;}
+
+    .search-box {text-align: center; margin-bottom: 20px;}
+    .search-box input {padding: 10px; width: 80%; max-width: 400px; border: 1px solid #ccc; border-radius: 5px;}
+
+    .category-tabs {text-align: center; margin-bottom: 20px;}
+    .category-tabs button {margin: 0 10px; padding: 10px 15px; border: none; background: #eee; cursor: pointer; border-radius: 5px;}
+    .category-tabs button.active {background: #ff9800; color: white;}
+
+    .menu-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;}
+    .menu-item {background: #fafafa; border: 1px solid #ddd; border-radius: 10px; text-align: center; padding: 10px;}
+    .menu-item img {width: 100%; height: 150px; object-fit: cover; border-radius: 10px;}
+    .menu-item h3 {margin: 10px 0 5px;}
+    .menu-item p {color: #888;}
+    .menu-item button {background: #ff5722; border: none; padding: 10px; color: white; border-radius: 5px; margin-top: 10px; cursor: pointer;}
+
+    .cart {position: fixed; top: 80px; right: 20px; background: white; border: 1px solid #ddd; padding: 15px; width: 250px; border-radius: 10px; z-index: 998; box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
+    .cart h4 {margin-bottom: 10px;}
+    .cart ul {list-style: none; max-height: 200px; overflow-y: auto; margin-bottom: 10px;}
+    .cart ul li {padding: 5px 0; border-bottom: 1px solid #eee;}
+
+    .reservation, .reviews, .offers, .gallery, .contact {margin-top: 40px;}
+    .gallery img {width: 100%; height: 200px; object-fit: cover; border-radius: 10px;}
+
+    .modal, .overlay {display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000;}
+    .modal-content {background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; text-align: center;}
+    .modal-content input, .modal-content textarea {width: 100%; padding: 10px; margin: 10px 0;}
+    .modal-content button {padding: 10px 20px; background: #ff5722; color: white; border: none; border-radius: 5px; cursor: pointer;}
+
+    footer {background: #333; color: white; text-align: center; padding: 20px; margin-top: 40px;}
+
+    @media (max-width: 768px) {
+      .menu-toggle {display: block;}
+      nav {display: none; flex-direction: column; position: absolute; top: 60px; background: #ff5722; right: 20px; padding: 10px;}
+      nav.active {display: flex;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FoodieFiesta</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <nav id="navbar">
+      <a href="#menu">Menu</a>
+      <a href="#offers">Offers</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#reservation">Reserve</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Welcome to FoodieFiesta</h1>
+    <p>Experience flavor like never before</p>
+  </section>
+
+  <section class="section" id="menu">
+    <h2>Our Menu</h2>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search for food...">
+    </div>
+    <div class="category-tabs">
+      <button class="active" onclick="filterCategory('all')">All</button>
+      <button onclick="filterCategory('pizza')">Pizza</button>
+      <button onclick="filterCategory('burger')">Burger</button>
+      <button onclick="filterCategory('biryani')">Biryani</button>
+    </div>
+    <div class="menu-grid" id="menuItems">
+      <!-- Menu items will be inserted by JS -->
+    </div>
+  </section>
+
+  <div class="cart" id="cart">
+    <h4>Your Cart</h4>
+    <ul id="cartList"></ul>
+    <strong>Total: ₹<span id="totalPrice">0</span></strong>
+  </div>
+
+  <section class="section offers" id="offers">
+    <h2>Special Offers</h2>
+    <p style="text-align:center;">🎉 Get 20% off on all Pizza orders above ₹500! Use code: PIZZA20</p>
+  </section>
+
+  <section class="section reviews" id="reviews">
+    <h2>Customer Reviews</h2>
+    <p style="text-align:center;">⭐️⭐️⭐️⭐️⭐️ – "Amazing food, fast delivery!" – Rohan</p>
+    <p style="text-align:center;">⭐️⭐️⭐️⭐️ – "Loved the biryani! Will order again." – Neha</p>
+  </section>
+
+  <section class="section gallery" id="gallery">
+    <h2>Gallery</h2>
+    <div class="menu-grid">
+      <img src="https://source.unsplash.com/400x300/?food,plate">
+      <img src="https://source.unsplash.com/400x300/?dining">
+      <img src="https://source.unsplash.com/400x300/?snacks">
+      <img src="https://source.unsplash.com/400x300/?dessert">
+    </div>
+  </section>
+
+  <section class="section reservation" id="reservation">
+    <h2>Reserve a Table</h2>
+    <div style="text-align:center">
+      <button onclick="openModal('reserve')">Book Now</button>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <h2>Contact Us</h2>
+    <p style="text-align:center;">Email: contact@foodiefiesta.com | Phone: +91 9876543210</p>
+  </section>
+
+  <footer>
+    &copy; 2025 FoodieFiesta. All Rights Reserved.
+  </footer>
+
+  <!-- Modals -->
+  <div class="overlay" id="modalOverlay">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    const items = [
+      { name: "Cheesy Pizza", price: 249, img: "https://source.unsplash.com/400x300/?pizza", category: "pizza" },
+      { name: "Classic Burger", price: 199, img: "https://source.unsplash.com/400x300/?burger", category: "burger" },
+      { name: "Hyderabadi Biryani", price: 299, img: "https://source.unsplash.com/400x300/?biryani", category: "biryani" }
+    ];
+
+    let cart = [], total = 0;
+
+    function renderMenu(filtered = items) {
+      const container = document.getElementById('menuItems');
+      container.innerHTML = '';
+      filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        div.innerHTML = `
+          <img src="${item.img}" alt="${item.name}"/>
+          <h3>${item.name}</h3>
+          <p>₹${item.price}</p>
+          <button onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      total += price;
+      updateCart();
+    }
+
+    function updateCart() {
+      const list = document.getElementById('cartList');
+      list.innerHTML = '';
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ₹${item.price}`;
+        list.appendChild(li);
+      });
+      document.getElementById('totalPrice').textContent = total;
+    }
+
+    function filterCategory(category) {
+      document.querySelectorAll('.category-tabs button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      if (category === 'all') renderMenu(items);
+      else renderMenu(items.filter(i => i.category === category));
+    }
+
+    function openModal(type) {
+      const modal = document.getElementById('modalContent');
+      const overlay = document.getElementById('modalOverlay');
+      overlay.style.display = 'flex';
+
+      if (type === 'reserve') {
+        modal.innerHTML = `
+          <h3>Book Your Table</h3>
+          <input type='text' placeholder='Name'>
+          <input type='date'>
+          <input type='time'>
+          <input type='number' placeholder='No. of Guests'>
+          <button onclick="closeModal()">Reserve</button>
+        `;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const value = e.target.value.toLowerCase();
+      const filtered = items.filter(i => i.name.toLowerCase().includes(value));
+      renderMenu(filtered);
+    });
+
+    function toggleMenu() {
+      document.getElementById('navbar').classList.toggle('active');
+    }
+
+    renderMenu();
+  </script>
+</body>
+</html>

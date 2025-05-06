@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gourmet Haven Restaurant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #111;
+      padding: 1.5rem 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      transition: background-color 0.3s ease;
+    }
+
+    nav:hover {
+      background-color: #222;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin: 0 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #facc15;
+    }
+
+    /* Hero Section */
+    header {
+      background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836') center/cover no-repeat;
+      height: 100vh;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    header h1 {
+      font-size: 4rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    header p {
+      font-size: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Menu Section */
+    .menu-section {
+      padding: 80px 20px;
+      background-color: #fff;
+      text-align: center;
+    }
+
+    .menu-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      font-weight: bold;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      justify-items: center;
+    }
+
+    .menu-item {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 5px solid #facc15;
+    }
+
+    .menu-item h3 {
+      margin-top: 20px;
+      font-size: 1.6rem;
+      color: #333;
+    }
+
+    .menu-item p {
+      margin-bottom: 20px;
+      color: #777;
+      font-size: 1.1rem;
+    }
+
+    /* Reservation Section */
+    .reservation-section {
+      padding: 80px 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+
+    .reservation-form {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .reservation-form input, .reservation-form select {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .reservation-form input:focus, .reservation-form select:focus {
+      border-color: #facc15;
+    }
+
+    .reservation-form button {
+      background-color: #facc15;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .reservation-form button:hover {
+      background-color: #eab308;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 80px 20px;
+      background-color: #fff;
+    }
+
+    .contact-form {
+      background-color: #f4f4f4;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .contact-form input:focus, .contact-form textarea:focus {
+      border-color: #facc15;
+    }
+
+    .contact-form button {
+      background-color: #facc15;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background-color: #eab308;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    footer p {
+      font-size: 1rem;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      header p {
+        font-size: 1.2rem;
+      }
+
+      .menu-item img {
+        height: 200px;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#reserve">Reserve</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header>
+    <h1>Gourmet Haven</h1>
+    <p>Delicious food, unforgettable experience</p>
+  </header>
+
+  <!-- Menu Section -->
+  <div class="menu-section" id="menu">
+    <h2>Our Special Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1598866545597-2ba13f1c68f3" alt="Pasta">
+        <h3>Italian Pasta</h3>
+        <p>Aromatic and flavorful with fresh ingredients</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1601050690595-3136e22a78bb" alt="Burger">
+        <h3>Cheesy Burger</h3>
+        <p>Juicy beef patty with melted cheese</p>
+      </div>
+      <div class="menu-item">
+        <img src="https://images.unsplash.com/photo-1593471250774-5f849d1e9b30" alt="Pizza">
+        <h3>Classic Pizza</h3>
+        <p>Thin crust pizza with fresh toppings</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reservation Section -->
+  <div class="reservation-section" id="reserve">
+    <h2>Reserve a Table</h2>
+    <div class="reservation-form">
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email Address" required>
+      <input type="date" required>
+      <input type="time" required>
+      <select required>
+        <option value="" disabled selected>Number of Guests</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5+</option>
+      </select>
+      <button type="submit">Book Now</button>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="contact-section" id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button type="submit">Send Message</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Gourmet Haven | All rights reserved</p>
+  </footer>
+
+</body>
+</html>
